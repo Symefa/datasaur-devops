@@ -3,7 +3,7 @@
 name: CI-CD
 env:
   NAMESPACE: komodo-nest
-  DEPLOYMENT: komodo
+  DEPLOYMENT: komodo-datasaur
   IMAGE_NAME: symefa/datasaur-symefa
   VERSION: latest
   REGION: ap-southeast-1
@@ -57,5 +57,5 @@ jobs:
           cluster_name: $CLUSTER_NAME
         with:
           args: |
-            kubectl set image deployment/$DEPLOYMENT $K8S_DEPLOYMENT=$IMAGE_NAME:$VERSION -n $NAMESPACE && kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE
+            kubectl set image deployment/$DEPLOYMENT $DEPLOYMENT=$IMAGE_NAME:$VERSION -n $NAMESPACE && kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE
         
