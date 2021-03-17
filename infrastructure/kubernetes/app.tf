@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "deploy" {
           name  = "komodo"
           port {
               name = "komodo"
-              container_port = 80
+              container_port = 3000
           }
           
         }
@@ -54,7 +54,7 @@ resource "kubernetes_service" "komodo" {
     type  = "NodePort"
     port {
       port = 80
-      target_port = 80
+      target_port = 3000
       protocol = "TCP"
     }
   }
