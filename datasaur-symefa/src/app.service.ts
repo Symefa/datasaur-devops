@@ -6,6 +6,6 @@ export class AppService {
     return 'Hello World!';
   }
   getKomodo(): string {
-    return 'Hello Komodo!';
+    return 'Hello Kodomo!';
   }
 }
