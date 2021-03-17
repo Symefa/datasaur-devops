@@ -1,0 +1,61 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-CD
+env:
+  DOCKER_IMAGE: symefa/datasaur-symefa
+  DOCKER_TAG: latest
+  K8S_NAMESPACE: default
+  K8S_DEPLOYMENT: komodo
+  AWS_REGION: ap-southeast-2
+  EKS_CLUSTER_NAME: komodo_islands-cluster
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+    paths:
+      - 'datasaur-symefa/**'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          file: datasaur-symefa/Dockerfile
+          context: datasaur-symefa/
+          push: true
+          tags: symefa/datasaur-symefa:latest
+      - 
+        name: Deploy
+        uses: cancue/eks-action@v0.0.2
+        env:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: $AWS_REGION
+          cluster_name: $EKS_CLUSTER_NAME
+        with:
+          args: |
+            kubectl set image deployment/$K8S_DEPLOYMENT $K8S_DEPLOYMENT=$DOCKER_IMAGE:$DOCKER_TAG -n $K8S_NAMESPACE && kubectl rollout status deployment/$K8S_DEPLOYMENT -n $K8S_NAMESPACE
+        
