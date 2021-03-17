@@ -29,7 +29,6 @@ module "eks_node_group" {
   min_nodes         = var.min_nodes
 }
 
-
 module "fargate" {
   source                  = "./eks/fargate"
   eks_cluster_name        = module.eks_cluster.cluster_name
@@ -51,5 +50,13 @@ module "kubernetes" {
   replicas              = var.deployment_replicas
   deployment_name       = var.deployment_name
   labels                = var.app_labels
+  acm_certificate       = module.route53.acm_certificate
+  domain_name           = "komodo.${var.domain_name}"
   namespace_depends_on  = [ module.fargate.id , module.eks_node_group.id ]
+}
+
+module "route53" {
+  source                = "./dns"
+  domain                = var.domain_name
+  record_elb_address    = [module.kubernetes.load_balancer_hostname]
 }

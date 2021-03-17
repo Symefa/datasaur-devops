@@ -69,3 +69,8 @@ variable "deployment_replicas" {
     type = string
     description = "Number of replicas for the Deployment"
 }
+
+variable "domain_name" {
+    type = string
+    description = "Domain Name"
+}

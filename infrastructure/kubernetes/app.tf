@@ -53,7 +53,7 @@ resource "kubernetes_service" "komodo" {
     selector = var.labels
     type  = "NodePort"
     port {
-      port = 80
+      port = 443
       target_port = 3000
       protocol = "TCP"
     }
@@ -66,14 +66,20 @@ resource "kubernetes_ingress" "komodo" {
     name      = "${var.deployment_name}-ingress"
     namespace = kubernetes_namespace.namespace.metadata[0].name
     annotations = {
-      "kubernetes.io/ingress.class"           = "alb"
-      "alb.ingress.kubernetes.io/scheme"      = "internet-facing"
-      "alb.ingress.kubernetes.io/target-type" = "ip"
+      "kubernetes.io/ingress.class"               = "alb"
+      "alb.ingress.kubernetes.io/scheme"          = "internet-facing"
+      "alb.ingress.kubernetes.io/target-type"     = "ip"
+      "alb.ingress.kubernetes.io/certificate-arn" = var.acm_certificate
+      "alb.ingress.kubernetes.io/listen-ports"    = "[{\"HTTPS\":443}]"
     }
+    
     labels = var.labels
   }
 
   spec {
+    tls {
+      hosts = [var.domain_name]
+    }
     backend {
       service_name = kubernetes_service.komodo.metadata[0].name
       service_port = kubernetes_service.komodo.spec[0].port[0].port

@@ -13,6 +13,7 @@ fargate_profile_name        = "eks_fargate"
 kubernetes_namespace        = "komodo-nest"
 deployment_name             = "komodo"
 deployment_replicas         = 3
+domain_name                 = "syme.fun"
 app_labels = { 
     "app" = "komodo"
     "tier" = "backend"

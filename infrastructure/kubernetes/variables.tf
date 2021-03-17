@@ -56,3 +56,13 @@ variable "namespace_depends_on" {
   type    = any
   default = null
 }
+
+variable "acm_certificate" {
+  type    = any
+  default = null
+}
+
+variable "domain_name" {
+  type    = any
+  default = null
+}
