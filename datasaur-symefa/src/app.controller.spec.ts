@@ -18,4 +18,11 @@ describe('AppController', () => {
       expect(appController.getHello()).toBe('Hello World!');
     });
   });
+
+  describe('getKomodo', () => {
+    it('should return "Hello Komodo!"', () => {
+      const appController = app.get<AppController>(AppController);
+      expect(appController.getHello()).toBe('Hello Komodo!');
+    });
+  });
 });
