@@ -2,12 +2,12 @@
 
 name: CI-CD
 env:
-  DOCKER_IMAGE: symefa/datasaur-symefa
-  DOCKER_TAG: latest
-  K8S_NAMESPACE: default
-  K8S_DEPLOYMENT: komodo
-  AWS_REGION: ap-southeast-2
-  EKS_CLUSTER_NAME: komodo_islands-cluster
+  NAMESPACE: komodo-nest
+  DEPLOYMENT: komodo
+  IMAGE_NAME: symefa/datasaur-symefa
+  VERSION: latest
+  REGION: ap-southeast-1
+  CLUSTER_NAME: komodo_cluster-datasaur
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -53,9 +53,9 @@ jobs:
         env:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: $AWS_REGION
-          cluster_name: $EKS_CLUSTER_NAME
+          aws_region: $REGION
+          cluster_name: $CLUSTER_NAME
         with:
           args: |
-            kubectl set image deployment/$K8S_DEPLOYMENT $K8S_DEPLOYMENT=$DOCKER_IMAGE:$DOCKER_TAG -n $K8S_NAMESPACE && kubectl rollout status deployment/$K8S_DEPLOYMENT -n $K8S_NAMESPACE
+            kubectl set image deployment/$DEPLOYMENT $K8S_DEPLOYMENT=$IMAGE_NAME:$VERSION -n $NAMESPACE && kubectl rollout status deployment/$DEPLOYMENT -n $NAMESPACE
         

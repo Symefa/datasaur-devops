@@ -91,5 +91,5 @@ resource "kubernetes_ingress" "komodo" {
     }
   }
   wait_for_load_balancer = true
-  depends_on = [ kubernetes_service.komodo, helm_release.using_iamserviceaccount ]
+  depends_on = [kubernetes_service.komodo, helm_release.using_iamserviceaccount ]
 }

@@ -53,8 +53,3 @@ module "kubernetes" {
   labels                = var.app_labels
   namespace_depends_on  = [ module.fargate.id , module.eks_node_group.id ]
 }
-
-module "cert-manager" {
-  source  = "basisai/cert-manager/helm"
-  version = "0.1.1"
-}
