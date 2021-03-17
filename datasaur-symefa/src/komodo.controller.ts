@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
-export class AppController {
+@Controller('komodo')
+export class KomodoController {
   constructor(private readonly appService: AppService) {}
-
+  
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getKomodo(): string {
+    return this.appService.getKomodo();
   }
 }
