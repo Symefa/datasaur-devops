@@ -1,5 +1,8 @@
 resource "aws_route53_zone" "primary" {
-  name = var.domain
+    name = var.domain
+    lifecycle {
+      prevent_destroy = true
+    }
 }
 
 resource "aws_route53_record" "www-komodo" {

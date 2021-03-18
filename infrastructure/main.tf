@@ -15,6 +15,7 @@ module "eks_cluster" {
   cluster_name        = var.eks_cluster_name
   public_subnets      = module.network.aws_subnets_public
   private_subnets     = module.network.aws_subnets_private
+  depends_on          = [module.network.id]
 } 
 
 module "eks_node_group" {
@@ -27,6 +28,7 @@ module "eks_node_group" {
   desired_nodes     = var.desired_nodes
   max_nodes         = var.max_nodes
   min_nodes         = var.min_nodes
+  depends_on        = [module.network.id]
 }
 
 module "fargate" {
