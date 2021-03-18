@@ -1,10 +1,10 @@
 # Datasaur DevOps
 
-
 ## Table of Contents
 
 - [Datasaur DevOps](#datasaur-devops)
   - [Table of Contents](#table-of-contents)
+  - [Must Read](#must-read)
   - [Planning](#planning)
     - [AWS Ecosystem Plan](#aws-ecosystem-plan)
   - [Preparing](#preparing)
@@ -18,6 +18,10 @@
     - [Accessing Grafana](#accessing-grafana)
     - [Accessing Prometheus](#accessing-prometheus)
   - [Cleaning up](#cleaning-up)
+  - [Troubleshooting](#troubleshooting)
+
+## Must Read
+**This deployment will modify root domain A record**
 
 ## Planning
 
@@ -125,7 +129,7 @@ app_labels = {
 | `grafana_password`    | Password for grafana                       	|               	|
 | `app_labels`          | Set name of the apps and tier              	|               	|
 | `docker_image`        | dockerhub image to be deployed             	|               	|
-| `app_domain`          | Full application domain name         	        |               	|
+| `app_domain`          | Full application domain name         	      |               	|
 
 after your create configuration file run:
 ```cmd
@@ -176,7 +180,7 @@ To view default dashboard, import file "grafana-dashboard.js" inside the infrast
 ### Accessing Prometheus
 Run this command:
 ```cmd
-kubectl port-forward -n monitoring svc/prometheus 8081:80
+kubectl port-forward -n monitoring svc/prometheus-server 8081:80
 ```
 Then click this [Prometheus](http://localhost:8081/)
 
@@ -203,5 +207,12 @@ infrastructure
 ...
 ```
 
-***wild kawai komodo dragon appears!!***
+## Troubleshooting
+- When stuck at destroy igw try again after sometimes!
+- Ingnore prometheus failed build, it works fine!
+- If stuck because namespace conflict try deleting it manually using helm and/or kubectl
+
+
+**wild kawai komodo dragon appears!!**
+
 ![komodo](assets/komodo_kawai_best.jpg)
