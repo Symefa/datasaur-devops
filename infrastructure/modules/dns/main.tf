@@ -8,6 +8,9 @@ resource "aws_route53_record" "www-komodo" {
     type    = "CNAME"
     ttl     = 300
     records = var.record_elb_address
+    lifecycle {
+      create_before_destroy = true
+    }
 }
 
 resource "aws_route53_record" "www" {
@@ -16,6 +19,10 @@ resource "aws_route53_record" "www" {
     type    = "A"
     ttl     = 300
     records = ["122.248.43.197"]
+    lifecycle {
+      prevent_destroy = true
+      create_before_destroy = true
+    }
 }
 
 module "acm"{
