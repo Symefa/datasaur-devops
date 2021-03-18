@@ -4,7 +4,7 @@ resource "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "www-komodo" {
     zone_id = aws_route53_zone.primary.zone_id
-    name    = "komodo.${var.domain}"
+    name    = var.app_domain
     type    = "CNAME"
     ttl     = 300
     records = var.record_elb_address
@@ -25,7 +25,7 @@ module "acm"{
     zone_id     = aws_route53_zone.primary.zone_id
 
     subject_alternative_names = [
-        "komodo.${var.domain}"
+        var.app_domain
     ]
 
     wait_for_validation = false
