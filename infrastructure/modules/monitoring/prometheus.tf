@@ -5,7 +5,7 @@ data "template_file" "prometheus_values" {
 resource "helm_release" "prometheus" {
     chart      = "prometheus"
     name       = "prometheus"
-    namespace  = var.namespace
+    namespace  = kubernetes_namespace.namespace.metadata[0].name
     repository = "https://prometheus-community.github.io/helm-charts"
 
     values = [

@@ -75,6 +75,15 @@ variable "domain_name" {
     description = "Domain Name"
 }
 
+variable "app_domain" {
+  type = string
+  description = "Full app domain"
+}
+
 variable "grafana_password" {
   type = string
+}
+
+variable "docker_image" {
+  type  = string
 }

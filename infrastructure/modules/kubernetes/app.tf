@@ -27,7 +27,7 @@ resource "kubernetes_deployment" "deploy" {
 
       spec {
         container {
-          image = "symefa/datasaur-symefa:latest"
+          image = var.docker_image
           name  = "komodo"
           port {
               name = "komodo"

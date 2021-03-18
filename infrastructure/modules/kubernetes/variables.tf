@@ -66,3 +66,7 @@ variable "domain_name" {
   type    = any
   default = null
 }
+
+variable "docker_image" {
+  type  = string
+}

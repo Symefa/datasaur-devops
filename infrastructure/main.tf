@@ -51,14 +51,16 @@ module "kubernetes" {
   deployment_name       = var.deployment_name
   labels                = var.app_labels
   acm_certificate       = module.route53.acm_certificate
-  domain_name           = "komodo.${var.domain_name}"
+  domain_name           = var.app_domain
   namespace_depends_on  = [ module.fargate.id , module.eks_node_group.id ]
+  docker_image          = var.docker_image
 }
 
 module "route53" {
   source                = "./modules/dns"
   domain                = var.domain_name
   record_elb_address    = [module.kubernetes.load_balancer_hostname]
+  app_domain            = var.app_domain
 }
 
 module "monitoring" {
