@@ -166,7 +166,7 @@ Run this command:
 ```cmd
 kubectl port-forward -n monitoring svc/grafana 9000:80
 ```
-Then click this [Grafana](localhost:9000). Login using:
+Then click this [Grafana](http://localhost:9000/). Login using:
 ```txt
 USERNAME=admin
 PASSWORD=<your grafana password>
@@ -178,7 +178,7 @@ Run this command:
 ```cmd
 kubectl port-forward -n monitoring svc/prometheus 8081:80
 ```
-Then click this [Prometheus](localhost:8081)
+Then click this [Prometheus](http://localhost:8081/)
 
 ## Cleaning up
 
