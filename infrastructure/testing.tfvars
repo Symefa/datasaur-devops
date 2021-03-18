@@ -14,6 +14,7 @@ kubernetes_namespace        = "komodo-nest"
 deployment_name             = "komodo"
 deployment_replicas         = 3
 domain_name                 = "syme.fun"
+grafana_password            = "admin"
 app_labels = { 
     "app" = "komodo"
     "tier" = "backend"

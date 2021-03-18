@@ -74,3 +74,7 @@ variable "domain_name" {
     type = string
     description = "Domain Name"
 }
+
+variable "grafana_password" {
+  type = string
+}

@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "network" {
-    source              = "./network"
+    source              = "./modules/network"
     vpc_name            = var.vpc_name
     vpc_cidr            = var.vpc_cidr
     eks_cluster_name    = var.eks_cluster_name
@@ -11,14 +11,14 @@ module "network" {
 }
 
 module "eks_cluster" {
-  source              = "./eks/eks_cluster"
+  source              = "./modules/eks/eks_cluster"
   cluster_name        = var.eks_cluster_name
   public_subnets      = module.network.aws_subnets_public
   private_subnets     = module.network.aws_subnets_private
 } 
 
 module "eks_node_group" {
-  source            = "./eks/eks_node_group"
+  source            = "./modules/eks/eks_node_group"
   eks_cluster_name  = module.eks_cluster.cluster_name
   node_group_name   = var.node_group_name
   subnet_ids        = [ module.network.aws_subnets_private[0], module.network.aws_subnets_private[1] ]
@@ -30,7 +30,7 @@ module "eks_node_group" {
 }
 
 module "fargate" {
-  source                  = "./eks/fargate"
+  source                  = "./modules/eks/fargate"
   eks_cluster_name        = module.eks_cluster.cluster_name
   fargate_profile_name    = var.fargate_profile_name
   subnet_ids              = module.network.aws_subnets_private
@@ -38,7 +38,7 @@ module "fargate" {
 }
 
 module "kubernetes" {
-  source                = "./kubernetes"
+  source                = "./modules/kubernetes"
   region                = var.region
   vpc_id                = module.network.vpc_id
   vpc_cidr              = var.vpc_cidr
@@ -56,7 +56,17 @@ module "kubernetes" {
 }
 
 module "route53" {
-  source                = "./dns"
+  source                = "./modules/dns"
   domain                = var.domain_name
   record_elb_address    = [module.kubernetes.load_balancer_hostname]
+}
+
+module "monitoring" {
+  source  = "./modules/monitoring"
+  eks_cluster_name      = module.eks_cluster.cluster_name
+  eks_cluster_endpoint  = module.eks_cluster.endpoint
+  eks_ca_certificate    = module.eks_cluster.ca_certificate
+  labels                = var.app_labels
+  namespace_depends_on  = [module.fargate.id]
+  grafana_password      = var.grafana_password
 }
