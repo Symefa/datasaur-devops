@@ -139,7 +139,7 @@ terraform plan -var-file=<your tfvars file>
 terraform apply -var-file=<your tfvars file>
 ```
 
-your application will be accessible from komodo."yourdomain". edit the `main.tf` inside the infrastructure folder to change
+your application will be accessible from `<Your app_domain>`. edit the `.tfvars` inside the infrastructure folder to change
 
 ## Setup CI-CD
 Edit .github/workflows/main.yml using configuration from your terraform to:
@@ -189,7 +189,7 @@ Then click this [Prometheus](http://localhost:8081/)
 You can destroy this cluster and vpc entirely by running:
 
 ```cmd
-terraform destroy
+terraform destroy -var-file=<Your tfvars file>
 ```
 
 ```
@@ -211,7 +211,21 @@ infrastructure
 - When stuck at destroy igw try again after sometimes!
 - Ingnore prometheus failed build, it works fine!
 - If stuck because namespace conflict try deleting it manually using helm and/or kubectl
+- If apply failed try again after sometimes, this happen because the dns required ingress setup properly first and terraform seems doesnt catch that
 
+Common command to debug terraform:
+```cmd
+terraform refresh -var-file=<Your tfvars file>
+terraform state list
+terraform state show <state>
+```
+
+Common command to debug kubernetes:
+```cmd
+kubectl list <type> -n <namespace>
+kubectl describe <type> <name> -n <namespace>
+helm show <name> -n <namespace>
+```
 
 **wild kawai komodo dragon appears!!**
 
