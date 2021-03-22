@@ -209,7 +209,6 @@ infrastructure
 
 ## Troubleshooting
 - When stuck at destroy igw try again after sometimes!
-- Ingnore prometheus failed build, it works fine!
 - If stuck because namespace conflict try deleting it manually using helm and/or kubectl
 - If apply failed try again after sometimes, this happen because the dns required ingress setup properly first and terraform seems doesnt catch that
 

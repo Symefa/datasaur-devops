@@ -43,75 +43,75 @@ serverFiles:
             url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
 
 ## alertmanager ConfigMap entries
-alertmanagerFiles:
-  alertmanager.yml:
-    global:
-      slack_api_url: ''
+# alertmanagerFiles:
+#   alertmanager.yml:
+#     global:
+#       slack_api_url: ''
 
-    receivers:
-      - name: default-receiver
-        slack_configs:
-         - channel: '#my-slack'
-           send_resolved: true
-           title: Default Alerts
-           title_link: http://prometheus-server.monitoring/targets
-           text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
+#     receivers:
+#       - name: default-receiver
+#         slack_configs:
+#          - channel: '#my-slack'
+#            send_resolved: true
+#            title: Default Alerts
+#            title_link: http://prometheus-server.monitoring/targets
+#            text: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
       
-      - name: critical-receiver
-        slack_configs:
-         - channel: '#my-slack'
-           send_resolved: true
-           title_link: http://prometheus-server.monitoring/targets
-           title: "{{ .CommonLabels.alertname }}"
-           color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
-           fields:
-           - title: "{{ .CommonAnnotations.summary }}"
-             value: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
+#       - name: critical-receiver
+#         slack_configs:
+#          - channel: '#my-slack'
+#            send_resolved: true
+#            title_link: http://prometheus-server.monitoring/targets
+#            title: "{{ .CommonLabels.alertname }}"
+#            color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
+#            fields:
+#            - title: "{{ .CommonAnnotations.summary }}"
+#              value: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
       
-      - name: error-receiver
-        slack_configs:
-         - channel: '#my-slack'
-           send_resolved: true
-           title_link: http://prometheus-server.monitoring/targets
-           title: "{{ .CommonLabels.alertname }}"
-           color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
-           fields:
-           - title: "{{ .CommonAnnotations.summary }}"
-             value: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
+#       - name: error-receiver
+#         slack_configs:
+#          - channel: '#my-slack'
+#            send_resolved: true
+#            title_link: http://prometheus-server.monitoring/targets
+#            title: "{{ .CommonLabels.alertname }}"
+#            color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
+#            fields:
+#            - title: "{{ .CommonAnnotations.summary }}"
+#              value: "{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}"
 
-      - name: warning-receiver
-        slack_configs:
-         - channel: '#my-slack'
-           send_resolved: true
-           title: "{{ .CommonLabels.alertname }}"
-           title_link: "{{ .CommonAnnotations.url }}"
-           color: '{{ if eq .Status "firing" }}warning{{ else }}good{{ end }}'
-           fields:
-           - title: "{{ .CommonAnnotations.summary }}"
-             value: "{{ .CommonAnnotations.description }}"
+#       - name: warning-receiver
+#         slack_configs:
+#          - channel: '#my-slack'
+#            send_resolved: true
+#            title: "{{ .CommonLabels.alertname }}"
+#            title_link: "{{ .CommonAnnotations.url }}"
+#            color: '{{ if eq .Status "firing" }}warning{{ else }}good{{ end }}'
+#            fields:
+#            - title: "{{ .CommonAnnotations.summary }}"
+#              value: "{{ .CommonAnnotations.description }}"
 
-    route:
-      group_wait: 10s
-      group_interval: 5m
-      receiver: default-receiver
-      repeat_interval: 3h
-      # routes:
-      # All alerts with service=mysql or service=cassandra
-      # are dispatched to the service issues.
-      # - receiver: 'service issues'
-      #   group_wait: 10s
-      #   match_re:
-      #     service: mysql|cassandra
-      routes:
-      - receiver: 'critical-receiver'
-        match:
-          severity: critical
-      - receiver: 'error-receiver'
-        match:
-          severity: error
-      - receiver: 'warning-receiver'
-        match:
-          severity: warning
-      # - receiver: deadmansswitch
-      #   match:
-      #     alertname: DeadMansSwitch
+#     route:
+#       group_wait: 10s
+#       group_interval: 5m
+#       receiver: default-receiver
+#       repeat_interval: 3h
+#       # routes:
+#       # All alerts with service=mysql or service=cassandra
+#       # are dispatched to the service issues.
+#       # - receiver: 'service issues'
+#       #   group_wait: 10s
+#       #   match_re:
+#       #     service: mysql|cassandra
+#       routes:
+#       - receiver: 'critical-receiver'
+#         match:
+#           severity: critical
+#       - receiver: 'error-receiver'
+#         match:
+#           severity: error
+#       - receiver: 'warning-receiver'
+#         match:
+#           severity: warning
+#       # - receiver: deadmansswitch
+#       #   match:
+#       #     alertname: DeadMansSwitch
